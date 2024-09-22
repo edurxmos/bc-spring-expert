@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -20,6 +21,12 @@ public class CategoryService {
     public List<CategoryDTO> findAll() {
         List<Category> list = repository.findAll();
         return list.stream().map((x) -> new CategoryDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public CategoryDTO findById(Long id) {
+        Optional<Category> entity = repository.findById(id);
+        return new CategoryDTO(entity.get());
     }
 
 }
