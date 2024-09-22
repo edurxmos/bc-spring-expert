@@ -1,5 +1,6 @@
 package com.eduardo.catalog.resources;
 
+import com.eduardo.catalog.dto.CategoryDTO;
 import com.eduardo.catalog.entities.Category;
 import com.eduardo.catalog.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/categories")
@@ -18,7 +20,7 @@ public class CategoryResources {
     private CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
+    public ResponseEntity<List<CategoryDTO>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
 
