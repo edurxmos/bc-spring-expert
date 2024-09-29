@@ -3,10 +3,13 @@ package com.eduardo.catalog.services;
 import com.eduardo.catalog.dto.CategoryDTO;
 import com.eduardo.catalog.entities.Category;
 import com.eduardo.catalog.repositories.CategoryRepository;
+import com.eduardo.catalog.services.exceptions.DataBaseException;
 import com.eduardo.catalog.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -52,5 +55,18 @@ public class CategoryService {
         }
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("This id not exists");
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Integrity violation");
+        }
+
+    }
 
 }
